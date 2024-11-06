@@ -7,42 +7,44 @@ let initialRatio = 16;
 let cellContainerWidth = 400;
 let initialCellSize = cellContainerWidth / initialRatio;
 
-for (let i = 1; i <= (initialRatio * initialRatio); i++) {
-	cellContainer.appendChild(cell.cloneNode(true));
-};
+function appendCells(ratio) {
+	for (let i = 1; i <=  (ratio * ratio); i++) {
+		cellContainer.appendChild(cell.cloneNode(true));
+	};
+}
 
-const allCells = Array.from(document.querySelectorAll('.cell'));
+appendCells(initialRatio);
+
+let allCells = Array.from(document.querySelectorAll('.cell'));
 
 allCells.forEach((cell) => {
-	cell.setAttribute('style', `width: ${initialCellSize}px; 
-		height: ${initialCellSize}px`);
+	cell.setAttribute('style', `width: ${initialCellSize}px; height: ${initialCellSize}px`);
 	cell.addEventListener('mouseover', () => {
 		cell.classList.add('bg-black');
 	});
 });
 
 const ratioChoiceBtn = document.querySelector('#ratio-btn');
+
 ratioChoiceBtn.addEventListener('click', () => {
-	let userRatio = prompt('Choose the size of the sides of the playing field', '');
+	let userRatio = prompt('Choose the size of the sides of the playing field. \nNot more than 100.', '');
+	if (userRatio > 100) {
+		alert('Too much. Enter another number');
+		return; 
+	}
+	
+	let allCells = Array.from(document.querySelectorAll('.cell'));
+	allCells.forEach(cell => cell.remove());
+	allCells.length = 0;
+	
 	userCellSize = cellContainerWidth / userRatio;
+	appendCells(userRatio);
 	
-	for (let i = 1; i <= (userRatio * userRatio); i++) {
-		cellContainer.appendChild(cell.cloneNode(true));
-	};
-	
-	const allCells = Array.from(document.querySelectorAll('.cell'));
-
+	allCells = Array.from(document.querySelectorAll('.cell'));
 	allCells.forEach((cell) => {
-		cell.setAttribute('style', `width: ${userCellSize}px; height: ${userCellSize}px`)
-	})
-
-	allCells.forEach((cell) => {
-		cell.setAttribute('style', `width: ${userCellSize}px; 
-			height: ${userCellSize}px`);
+		cell.setAttribute('style', `width: ${userCellSize}px; height: ${userCellSize}px`);
 		cell.addEventListener('mouseover', () => {
 			cell.classList.add('bg-black');
 		});
-	});
+	})
 });
-
-
